@@ -1,0 +1,68 @@
+---
+title: "DocPilot"
+tagline: "AI document agent for vehicle-loan officers. Research → scoping → live prototype."
+status: "live"
+decision: "Grounded in primary research; scoped by deciding what NOT to build."
+metric: "Designed for ~2x officer throughput (4–5 → 8–10 files/day)."
+stack: "Vite + React 19, Tailwind, Framer Motion"
+order: 2
+demo: "https://superleap-docpilot.netlify.app"
+repo: "https://github.com/avionicharshit-byte/docpilot"
+---
+
+## TL;DR
+
+An AI document agent for frontline vehicle-loan officers — built as a PM take-home for Superleap (AI-native CRM). It automates the manual WhatsApp document-collection loop. Designed to take an officer from ~4–5 to ~8–10 files/day. Shipped as a live interactive prototype, not a deck.
+
+---
+
+## Context
+
+Brief was "design an AI CRM feature that gives frontline users time back." I picked BFSI → digital vehicle lending and the loan officer as the user.
+
+The chokepoint: requesting docs via WhatsApp, waiting on piecemeal uploads, chasing borrowers, manually typing each document into the CRM, eyeballing for errors. This caps a good officer at ~4–5 files/day. The fix isn't more features — it's removing the wait-and-chase loop.
+
+I interviewed an actual frontline vehicle-loan officer at IDFC to ground the design in real workflow, not assumptions.
+
+---
+
+## The calls I made
+
+### 1. Grounded it in primary research, not assumptions
+
+Interviewed a frontline vehicle-loan officer at IDFC before scoping a single feature. The core feature — "auto-tell the customer what's missing or wrong without human involvement" — is literally what he asked for. Tradeoff: a narrower, validated scope over a broader impressive-sounding feature set.
+
+### 2. Scoped by deciding what NOT to build
+
+DocPilot owns only the manual KYC/income doc layer. It deliberately does **not** rebuild Anumati (the RBI-regulated Account Aggregator that already auto-pulls bank data post-OTP) and does **not** touch pricing/EMI.
+
+The research showed drop-off happens at pricing — but the officer's pain is time. So I targeted officer time, not the flashier drop-off metric, and said so explicitly. Non-goals are the senior move.
+
+### 3. Decided where not to apply AI
+
+DocPilot automates grunt work but the human owns the trust moments. It never auto-rejects. It escalates name mismatches for one-click officer review. It leaves the fraud-sensitive Anumati OTP/consent call to the human. Knowing where to stop is the product decision.
+
+### 4. Made the proposal a working prototype, not a deck
+
+The build presents research → problem → solution and demonstrates the feature live: synced CRM + WhatsApp panels, four realistic applicant scenarios. Show, don't tell.
+
+---
+
+## Outcome
+
+- Live interactive prototype at `superleap-docpilot.netlify.app`
+- Four end-to-end scenarios: name mismatch, blurry photo, expired GST, RC ownership anomaly
+- Designed for ~2x officer throughput (4–5 → 8–10 files/day)
+
+---
+
+## What I'd do next
+
+1. v2 into the pricing/EMI drop-off the research surfaced but I scoped out — that's the actual conversion problem.
+2. Instrument files/day + turnaround time for a real pilot to validate the throughput hypothesis.
+
+---
+
+## Stack
+
+`Vite` · `React 19` · `Tailwind` · `Framer Motion` · `lucide-react`

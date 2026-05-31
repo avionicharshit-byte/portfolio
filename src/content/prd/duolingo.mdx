@@ -1,0 +1,145 @@
+---
+title: "Duolingo — Notifications"
+tagline: "Durable habit formation without burning the notification channel."
+insight: "More notifications has diminishing returns and a real downside — fatigue → opt-out → the channel is lost permanently. The goal is habit retention, not notification volume."
+northStar: "D30 streak-maintenance rate"
+order: 2
+pdfPath: "/prd/duolingo.pdf"
+---
+
+## TL;DR
+
+**Product:** Duolingo notification / re-engagement system.  
+**Who:** Streak holders at risk of losing their streak (D3–D30 users). Duolingo has 575M+ total users, 70M+ monthly visits, 42M MAU. The retention engine runs on streaks.  
+**Why now:** Notification fatigue is driving opt-outs. The current system sends up to 3 push notifications per day to at-risk users. Open rate is declining. When a user opts out, the channel is gone — permanently.  
+**Success metric:** D30 streak-maintenance rate. Not sends. Not opens.  
+**Launch:** Phased, with frequency-cap guardrail hard-enforced from day one.
+
+---
+
+## Background & Problem
+
+Duolingo's retention mechanics are documented and specific: streak-loss aversion kicks in around day 3 and compounds. Streak freezes and streak repairs exist precisely because losing a streak is the #1 churn trigger.
+
+But the notification layer optimizes for volume, not habit. Evidence:
+- Current system: up to 3 push notifications/day for at-risk users
+- Notification types include: daily practice reminders, streak reminders, progress updates, motivational messages, leaderboard updates, special events, and passive-aggressive "These reminders don't seem to be working. We'll stop sending them for now." — the last type is a guilt-trigger that can backfire and accelerate opt-out
+- Open rate declining quarter-on-quarter
+- Opt-out rate creeping up
+
+The true problem: **habit formation without burning the channel.** Sending more is not the answer. Sending *right* is.
+
+**Why this matters more than it looks:** When a user opts out of push notifications, the channel is gone permanently — unless they re-enable in device settings, which almost nobody does. So an opt-out today destroys future retention capacity indefinitely. The notification system is a trust account: withdrawals (poor sends) are permanent; deposits (relevant, well-timed sends) build the balance.
+
+**Behavioral economics in play:**
+- **Loss aversion** (Kahneman): "You'll lose your 14-day streak" is more motivating than "Keep your 14-day streak" — loss framing outperforms gain framing for streak-maintenance specifically
+- **Variable reward** (Skinner): unpredictable content variation fights fatigue better than a reliable daily ping; the same message every day becomes noise
+- **Implementation intentions** (Gollwitzer): "when X, I will do Y" framing increases follow-through — send-time matched to the user's existing practice window is more effective than batch-job timing
+
+---
+
+## Goals & Non-Goals
+
+**Goals**
+- Personalize send-time to each user's historical practice window (ML-timed)
+- Hard frequency cap: max 1 notification/day, 5/week, enforced at send layer
+- Streak-loss-aversion copy: message references specific streak length and names the loss
+- Content variation pool (min 6 variants per scenario) to fight repetition fatigue
+- Lesson-completion suppression: no notification if lesson done that day
+- Instrument per-notification opt-out rate and D30 streak-maintenance lift
+
+**Non-Goals**
+- New lesson types or content changes
+- Changes to streak-freeze or streak-repair mechanics
+- Changes to the lesson engine or scoring
+- Paid-tier or Super Duolingo changes
+- Win-back campaigns for users who have already uninstalled
+- Email or in-app notification redesign (separate surface)
+
+---
+
+## User Stories / JTBD
+
+- *When I'm at risk of losing a streak I care about, I want a reminder that feels personal so I act on it.*
+- *When I've already done my lesson today, I don't want to receive a notification.*
+- *When I've been nagged three days in a row with the same message, I want to turn off notifications — and then I do.*
+- *When I get a passive-aggressive guilt notification, I feel manipulated and consider uninstalling.*
+
+---
+
+## Functional Requirements
+
+**P0 — Must ship**
+- ML send-time personalization: model each user's historical practice window (time-of-day + day-of-week); send within that ±1h window
+- Hard frequency cap: max 1/day, 5/week, enforced at send layer (not application layer), zero exceptions
+- Streak-aware copy: message references specific streak length ("Your 14-day streak is at risk") — no generic "Don't forget to practice"
+- Lesson-completion suppression: if user completed a lesson in the past 12h, suppress all notifications for that day
+- Content variation: minimum 6 copy variants per send scenario; same variant not shown twice consecutively
+
+**P1 — Should ship**
+- Loss-framing A/B test: "You'll lose your 14-day streak" vs. "Keep your 14-day streak" — measured on D7 retention, not open rate
+- Per-user opt-out rate monitoring dashboard (ops-facing, daily refresh)
+- Retire the passive-aggressive notification type entirely — it generates opt-outs without proportional retention lift
+
+**P2 — Nice to have**
+- Cross-channel coordination: suppress push if email was opened same-day
+- Streak-milestone celebration (7, 30, 100 days) with variable reward (collectible badge teaser)
+- Smart re-permission prompt for users who opted out >30 days ago
+
+---
+
+## Acceptance Criteria
+
+- Send-time personalization: ≥80% of sends occur within the user's historical ±1h practice window — *pass/fail: measurable from send logs.*
+- Frequency cap: no user receives >1 notification in any 24h window — *pass/fail: enforced at send layer, query-verifiable.*
+- Copy specificity: 100% of notifications reference the user's actual streak count — *pass/fail: zero generic-copy sends in production, verified by sampling.*
+- Lesson suppression: 0 notifications sent to users who completed a lesson in the past 12h — *pass/fail: join send log with lesson-completion log, count violations.*
+
+---
+
+## Success Metrics
+
+**North-star:** D30 streak-maintenance rate for notified users. Baseline ~42%. Target ~50% (+8pp) in 60 days.
+
+**Guardrails**
+- Notification opt-out rate: must not increase vs. baseline week-over-week (if it does, pause frequency changes and investigate immediately)
+- App uninstall rate (D7): no increase vs. control
+- Per-user frequency: hard cap enforced, violation rate tracked as an engineering health metric
+
+**What we are NOT measuring as success:**
+- Open rate (a proxy for volume, not habit)
+- Click-through rate (measures curiosity, not retention)
+- Total sends (this is what we're reducing)
+
+---
+
+## Wireframes / User Flows
+
+**Flow: Send-time personalization**  
+`User completes lesson [timestamp logged] → ML model updates practice window → next-day send queued within window → lesson-completion check at send time → send or suppress`
+
+**Flow: Loss-framing notification**  
+`Copy: "Your [N]-day streak ends at midnight. 3 minutes to keep it."` → tap → lesson opens at next lesson in sequence → completion suppresses all sends for that day
+
+**Flow: Content variation rotation**  
+6+ variants per scenario → variant assignment avoids consecutive repeats → fatigue score tracked per user → copy refresh triggered when all variants exhausted
+
+---
+
+## Risks / Open Questions
+
+- **ML send-time cold-start:** New users have no historical practice window. Default to 8pm local time for first 7 days; personalize after minimum 3 data points.
+- **Timezone accuracy:** Personalized send-time requires accurate TZ data. App-reported vs. device-reported can diverge for travelers. Use device-reported TZ at send time, not at registration.
+- **Loss vs. gain framing:** Loss framing increases streak maintenance in short-window studies but may increase opt-outs for users who find it manipulative. Do not ship loss-framing at 100% without A/B data — the A/B test resolves this.
+- **Passive-aggressive notification retirement:** This type currently has non-zero CTR because guilt works short-term. Removing it will show a short-term CTR dip. Track D30 opt-out rate, not CTR, as the signal.
+- **Open:** Does the current data pipeline log lesson-completion timestamps with sub-1h granularity? Required for same-day suppression. Confirm with data eng before P0 commit.
+
+---
+
+## Rollout Plan
+
+**Phase 1 (Days 0–14):** 5% of D3–D30 streak holders. Instrument opt-out rate + streak maintenance. Frequency cap hard-enforced from day one. Decision gate: opt-out rate flat or declining, D7 retention flat or improving → proceed.
+
+**Phase 2 (Days 15–30):** 25% rollout. Activate loss-framing A/B test. Lesson-completion suppression (P1) ships. Passive-aggressive notification retired for all users in cohort.
+
+**Phase 3 (Days 31–60):** 100% rollout. Lock copy variation pool with content team sign-off. Evaluate P2 items (cross-channel, milestone celebrations). D30 retention measurement window opens.

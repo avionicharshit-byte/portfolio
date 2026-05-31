@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Prd from '../../layouts/Prd.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('prd');
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Prd
+  title={entry.data.title}
+  tagline={entry.data.tagline}
+  insight={entry.data.insight}
+  northStar={entry.data.northStar}
+  pdfPath={entry.data.pdfPath}
+>
+  <Content />
+</Prd>

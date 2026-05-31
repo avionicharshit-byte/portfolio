@@ -1,0 +1,117 @@
+---
+title: "Tohands POS"
+tagline: "Smart POS calculator for small merchants — 0 to 6,000+ devices."
+status: "live"
+decision: "Prioritized merchant pain over feature requests; factory as part of the product."
+metric: "0 → 6,000+ devices in 14 months — primary revenue line."
+stack: "C/C++17, embedded firmware, Mixpanel"
+order: 1
+videos: "/work/tohands"
+---
+
+## TL;DR
+
+Owned the product surface of a smart POS calculator from 0 → 6,000+ devices in 14 months. It's now the company's primary revenue line. The non-obvious call: treating the factory diagnostic pipeline as a product problem, not an ops problem.
+
+---
+
+## Context
+
+Small merchants in India manage inventory and checkout with a mix of paper ledgers, WhatsApp voice notes, and whatever POS system a distributor sold them. The pain isn't missing features — it's speed and reliability at the counter, with a customer queue behind them. Tohands built a smart POS calculator targeting this gap. I owned the product surface from the first firmware build to scale.
+
+<div class="media-video">
+  <video controls playsinline preload="none" data-lazy>
+    <source src="/work/tohands/onboarding.mp4" type="video/mp4" />
+  </video>
+  <p class="media-caption">Device onboarding flow — merchant setup from first boot.</p>
+</div>
+
+---
+
+## The calls I made
+
+### 1. Prioritized firmware features from on-ground merchant pain, not feature requests
+
+Translated store visits and call logs into a 6-week roadmap with the founders. Tradeoff: shipped fewer, higher-signal features versus a long backlog. The result was features merchants actually used versus ones that looked impressive in a pitch.
+
+### 2. Optimized for perceived checkout speed
+
+Sub-second SKU search across 15,000+ products. Lifted POS session completion tracked in Mixpanel. Tradeoff: indexing and memory cost on constrained hardware versus merchant-felt speed. On a device with tight constraints, every allocation is a product decision.
+
+<div class="media-video">
+  <video controls playsinline preload="none" data-lazy>
+    <source src="/work/tohands/bill-feature-demo.mp4" type="video/mp4" />
+  </video>
+  <p class="media-caption">Complete billing feature — built from scratch. SKU search, cart, and receipt flow.</p>
+</div>
+
+### 3. Treated the factory as part of the product
+
+Built a 9-test automated diagnostic suite that ran on every unit before it left the floor. First-pass yield improved to 90%. Per-device test time dropped 60%. I framed the factory test pipeline as a UX problem — the cost of a defective device reaching a merchant is an NPS disaster, not an ops line item.
+
+<div class="media-video">
+  <video controls playsinline preload="none" data-lazy>
+    <source src="/work/tohands/calculator-diagnostic-demo.mp4" type="video/mp4" />
+  </video>
+  <p class="media-caption">Calculator diagnostic suite running on the factory floor — 9 tests, every unit, before shipment.</p>
+</div>
+
+---
+
+## Hardware
+
+Getting the billing feature to production meant solving the full hardware loop — not just the firmware. The first POC was connecting the thermal printer over Bluetooth, which at the time had no existing implementation for this device class.
+
+<div class="media-video">
+  <video controls playsinline preload="none" data-lazy>
+    <source src="/work/tohands/printer-poc-with-bluetooth.mp4" type="video/mp4" />
+  </video>
+  <p class="media-caption">First POC — thermal printer connected over Bluetooth. This became the foundation for the receipt flow shipped to 6,000+ devices.</p>
+</div>
+
+---
+
+## In the field
+
+<div class="media-video">
+  <video controls playsinline preload="none" data-lazy>
+    <source src="/work/tohands/giving-demo-to-varun-dua.mp4" type="video/mp4" />
+  </video>
+  <p class="media-caption">Live demo to Varun Dua, founder of Acko — showing the POS in a real merchant setup.</p>
+</div>
+
+---
+
+## Everything runs on the device
+
+Beyond the core POS, the device runs arbitrary firmware. This was an Independence Day animation built and shipped as a live update — shows what's possible on constrained hardware when the base firmware is well-structured.
+
+<div class="media-video">
+  <video controls playsinline preload="none" data-lazy>
+    <source src="/work/tohands/independence-video.mp4" type="video/mp4" />
+  </video>
+  <p class="media-caption">Indian flag animation — Independence Day 2023. Deployed as a live firmware update to all devices.</p>
+</div>
+
+---
+
+## Outcome
+
+- **6,000+ devices** deployed in 14 months
+- **Primary revenue line** for the company
+- **First-pass yield 90%** — factory diagnostic suite live
+- **Per-device test time −60%**
+- Thermal printer + barcode scanner integration shipped to production
+
+---
+
+## What I'd do next
+
+1. Build a merchant-segment analytics layer: churn signal lives in session completion data, not NPS surveys.
+2. Productize the diagnostic suite into a remote-health dashboard — field defects are still caught reactively.
+
+---
+
+## Stack
+
+`C/C++17` · `embedded firmware` · `Mixpanel`

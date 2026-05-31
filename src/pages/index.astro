@@ -1,0 +1,273 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import WorkCard from '../components/WorkCard.astro';
+import PrdCard from '../components/PrdCard.astro';
+import Footer from '../components/Footer.astro';
+
+const workEntries = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const prdEntries = (await getCollection('prd')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Harshit Dev Yadav — Software Engineer">
+  <Nav />
+
+  <!-- ============================================================ HERO -->
+  <section class="pt-14 pb-0 relative overflow-hidden">
+    <div class="max-w-wide mx-auto px-6 md:px-10 pt-14 pb-16 md:pt-20 md:pb-20">
+
+      <!-- Asymmetric layout: content left, decoration right -->
+      <div class="relative">
+
+        <!-- Background accent mark -->
+        <div
+          class="absolute -top-8 right-0 w-px h-48 bg-gradient-to-b from-transparent via-accent/20 to-transparent hidden md:block"
+          aria-hidden="true"
+        ></div>
+
+        <!-- Headline -->
+        <h1
+          class="font-display text-display-xl text-ink max-w-[16ch] leading-[1.05] animate-in"
+          style="animation-delay: 0ms"
+        >
+          Product judgment. Engineering execution.
+        </h1>
+
+        <!-- Sub-headline -->
+        <p
+          class="mt-6 text-lg text-muted max-w-measure leading-relaxed animate-in"
+          style="animation-delay: 160ms"
+        >
+          Took a POS calculator from{' '}
+          <span class="font-mono text-ink font-medium">0 → 6,000+</span>
+          {' '}devices. Now building AI products end-to-end.
+          The differentiator: product judgment shows up <em>through</em> code — I make the call <em>and</em> I build it.
+        </p>
+
+        <!-- CTAs -->
+        <div class="mt-10 flex flex-wrap items-center gap-4 animate-in" style="animation-delay: 240ms">
+          <a
+            href="#work"
+            class="font-mono text-sm text-paper bg-ink px-6 py-3 rounded-sm hover:bg-accent transition-colors duration-150"
+          >
+            See the work →
+          </a>
+          <a
+            href="mailto:harshitavionic@gmail.com"
+            class="font-mono text-sm text-ink border border-rule px-6 py-3 rounded-sm hover:border-ink/40 transition-colors duration-150"
+          >
+            Get in touch
+          </a>
+        </div>
+
+        <!-- Social links -->
+        <div class="mt-8 flex items-center gap-5 animate-in" style="animation-delay: 320ms">
+          <a
+            href="https://github.com/avionicharshit-byte"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-xs text-muted hover:text-ink transition-colors uppercase tracking-wide"
+          >
+            GitHub
+          </a>
+          <span class="h-3 w-px bg-rule" aria-hidden="true"></span>
+          <a
+            href="https://www.linkedin.com/in/harshit-dev-yadav-361170201/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-xs text-muted hover:text-ink transition-colors uppercase tracking-wide"
+          >
+            LinkedIn
+          </a>
+          <span class="h-3 w-px bg-rule" aria-hidden="true"></span>
+          <a
+            href="mailto:harshitavionic@gmail.com"
+            class="font-mono text-xs text-muted hover:text-ink transition-colors uppercase tracking-wide"
+          >
+            Email
+          </a>
+          <span class="h-3 w-px bg-rule" aria-hidden="true"></span>
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-xs text-muted hover:text-accent transition-colors uppercase tracking-wide"
+          >
+            CV ↓
+          </a>
+        </div>
+      </div>
+
+      <!-- Metric strip — pulled toward bottom of hero -->
+      <div
+        class="mt-20 md:mt-28 grid grid-cols-2 md:grid-cols-4 gap-px border border-rule rounded-sm overflow-hidden bg-rule animate-in"
+        style="animation-delay: 400ms"
+      >
+        {[
+          { value: '6,000+', label: 'devices shipped' },
+          { value: '14 mo', label: 'POS 0→revenue' },
+          { value: '90%', label: 'factory first-pass yield' },
+          { value: '~2×', label: 'officer throughput' },
+        ].map((m) => (
+          <div class="bg-paper px-5 py-4">
+            <p class="font-mono text-accent text-xl font-semibold leading-none">{m.value}</p>
+            <p class="font-mono text-xs text-muted mt-1 uppercase tracking-wide">{m.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ WORK -->
+  <section class="section-rule pt-20 pb-20" id="work">
+    <div class="max-w-wide mx-auto px-6 md:px-10">
+
+      <div class="flex items-center gap-4 mb-3 animate-in">
+        <span class="font-mono text-xs text-muted uppercase tracking-widest">Work</span>
+        <span class="h-px flex-1 bg-rule max-w-[120px]" aria-hidden="true"></span>
+      </div>
+      <p class="text-muted text-sm max-w-measure mb-10 animate-in" style="animation-delay: 40ms">
+        Each entry opens with the decision I made, not a description of what I built.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {workEntries.map((entry, i) => (
+          <WorkCard
+            slug={entry.slug}
+            title={entry.data.title}
+            tagline={entry.data.tagline}
+            decision={entry.data.decision}
+            metric={entry.data.metric}
+            status={entry.data.status}
+            demo={entry.data.demo}
+            videos={entry.data.videos}
+            delay={i * 80}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ SPECS / PRDs -->
+  <section class="section-rule pt-20 pb-20" id="specs">
+    <div class="max-w-wide mx-auto px-6 md:px-10">
+
+      <div class="flex items-center gap-4 mb-3 animate-in">
+        <span class="font-mono text-xs text-muted uppercase tracking-widest">How I write specs</span>
+        <span class="h-px flex-1 bg-rule max-w-[120px]" aria-hidden="true"></span>
+      </div>
+      <p class="text-muted text-sm max-w-measure mb-10 animate-in" style="animation-delay: 40ms">
+        Two PRDs — each leads with the core insight, not the surface feature. Non-goals included.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {prdEntries.map((entry, i) => (
+          <PrdCard
+            slug={entry.slug}
+            title={entry.data.title}
+            tagline={entry.data.tagline}
+            insight={entry.data.insight}
+            pdfPath={entry.data.pdfPath}
+            delay={i * 80}
+          />
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ ABOUT / BACKGROUND -->
+  <section class="section-rule pt-20 pb-20" id="about">
+    <div class="max-w-wide mx-auto px-6 md:px-10">
+
+      <div class="flex items-center gap-4 mb-10 animate-in">
+        <span class="font-mono text-xs text-muted uppercase tracking-widest">Background</span>
+        <span class="h-px flex-1 bg-rule max-w-[120px]" aria-hidden="true"></span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20">
+
+        <!-- Bio -->
+        <div class="animate-in space-y-4" style="animation-delay: 80ms">
+          <p class="text-ink leading-relaxed max-w-measure">
+            Joined <strong>Tohands</strong> at founding stage as employee #1 on the product side —
+            owned the full surface from firmware to factory. Shipped the POS calculator from zero to
+            6,000+ devices and primary revenue in 14 months. Built the embedded diagnostic suite
+            that took first-pass yield to 90% and cut per-device test time by 60%.
+          </p>
+          <p class="text-ink leading-relaxed max-w-measure">
+            Before that, worked on kitchen-AI firmware at <strong>Upliance</strong>. Currently building
+            AI products end-to-end — DocPilot and Loan EMI Negotiator — and writing about the process
+            on <a href="https://www.youtube.com/avionicharshit" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">YouTube</a>.
+          </p>
+        </div>
+
+        <!-- Skills -->
+        <div class="animate-in" style="animation-delay: 160ms">
+          <div class="space-y-5">
+            {[
+              {
+                group: 'AI & Prototyping',
+                skills: ['Gemini / AI SDK', 'Next.js App Router', 'React 19', 'Vite', 'Framer Motion', 'Zod'],
+              },
+              {
+                group: 'Product & Analytics',
+                skills: ['Product scoping', 'PRD writing', 'User research', 'Mixpanel', 'Funnel analysis'],
+              },
+              {
+                group: 'Engineering',
+                skills: ['C/C++17', 'Embedded firmware', 'TypeScript', 'Tailwind', 'Astro', 'Git'],
+              },
+            ].map((group) => (
+              <div>
+                <p class="font-mono text-xs text-muted uppercase tracking-wide mb-2">{group.group}</p>
+                <div class="flex flex-wrap gap-1.5">
+                  {group.skills.map((skill) => (
+                    <span class="font-mono text-xs text-ink bg-rule/70 border border-rule px-2.5 py-1 rounded-sm">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CONTACT -->
+  <section class="section-rule pt-20 pb-20" id="contact">
+    <div class="max-w-wide mx-auto px-6 md:px-10">
+
+      <div class="max-w-measure animate-in">
+        <h2 class="font-display text-display-lg text-ink mb-4">
+          Let's talk.
+        </h2>
+        <p class="text-muted leading-relaxed mb-8">
+          Looking for product-engineering roles — PM, APM, founding engineer, or hybrid tracks
+          where product judgment and building coexist.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="mailto:harshitavionic@gmail.com"
+            class="font-mono text-sm text-paper bg-ink px-6 py-3 rounded-sm hover:bg-accent transition-colors duration-150"
+          >
+            harshitavionic@gmail.com →
+          </a>
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-sm text-ink border border-rule px-6 py-3 rounded-sm hover:border-ink/40 transition-colors"
+          >
+            Download CV ↓
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

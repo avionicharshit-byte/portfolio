@@ -1,0 +1,72 @@
+---
+title: "Loan EMI Negotiator"
+tagline: "AI agent that turns a loan profile into a lender-specific rate-negotiation artifact."
+status: "live"
+decision: "One painful workflow, not 'AI personal finance.' Action artifact, not a chat."
+metric: "~90s generation. Live across 7 loan types + major Indian lenders."
+stack: "Next.js 16, React 19, TypeScript, AI SDK + Gemini, Zod, Tailwind"
+order: 3
+demo: "https://loan-emi-negotiator.netlify.app"
+repo: "https://github.com/avionicharshit-byte/loan-emi-negotiator"
+---
+
+## TL;DR
+
+AI agent that turns an Indian borrower's loan profile into a lender-specific rate-negotiation artifact — target rate band, ranked arguments with sources, draft email, and phone script — in ~90 seconds. The product wedge: the gap between informing and acting. Generic finance chatbots explain repo rates; the borrower still doesn't know what to say to the bank.
+
+---
+
+## Context
+
+Indian retail borrowers typically pay 0.5–1.5% above their lender's own published rate floor for the same CIBIL band, simply because they never write the email asking for a reset.
+
+Generic finance chatbots explain repo rates. The borrower still doesn't know *what to say to the bank*. The gap between **informing** and **acting** is where the value — and the trust problem — lives.
+
+---
+
+## The calls I made
+
+### 1. One painful workflow, not "AI personal finance"
+
+The agent does exactly one thing: produce a credible, lender-aware rate-reduction request. Narrow scope is what makes the AI feel reliable. "AI personal finance" is a product that does everything and solves nothing.
+
+### 2. An action artifact, not a chat
+
+Output is a structured, editable plan — target rate, ranked arguments, email draft, phone script. Not conversational ambiguity. The borrower leaves with something to send, not something to think about.
+
+### 3. Trust design over model quality
+
+Every claim cites a public RBI or lender source. Assumptions and confidence are surfaced. Nothing auto-sends. The model drafts; the human commits. Trust is a product feature, not an afterthought.
+
+---
+
+## Engineering calls that are product calls
+
+**Hardcoded lender rate-card snapshot** to ground the model on verifiable floors. Live scrape flagged as a follow-up — honest about the audit/freshness tradeoff.
+
+**Optional statement upload → Gemini extract** to kill the data-entry drop-off without making upload mandatory. The insight: mandatory uploads cause drop-off; optional ones remove friction for users who want precision.
+
+**4-tier Gemini fallback ladder + deterministic demo mode + `X-Demo-Reason` audit headers.** Reliability as a product feature — it never shows a broken state during a live demo or quota spike.
+
+---
+
+## Outcome
+
+- Live at `loan-emi-negotiator.netlify.app`
+- ~90s generation
+- Supports home, personal, auto, LAP, education, gold, and business loans
+- Major Indian lenders: SBI, HDFC, ICICI, Axis, and others
+
+---
+
+## What I'd do next
+
+1. Live rate-card scrape with audit trail — removes the freshness tradeoff I made.
+2. Eval suite for hallucination and source quality — the trust proposition requires measurement.
+3. Persistence + encrypted document storage for repeat users.
+
+---
+
+## Stack
+
+`Next.js 16` · `React 19` · `TypeScript` · `AI SDK + Gemini` · `Zod` · `React Hook Form` · `Tailwind`
