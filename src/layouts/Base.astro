@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title,
+  description = 'Software engineer who ships product. Took a POS calculator from 0 → 6,000+ devices. Now building AI products end-to-end.',
+  ogImage = '/og-image.png',
+  canonicalUrl,
+} = Astro.props;
+
+const siteUrl = 'https://harshityadav.dev';
+const resolvedCanonical = canonicalUrl ?? siteUrl + Astro.url.pathname;
+const resolvedOg = siteUrl + ogImage;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={resolvedCanonical} />
+
+    <!-- OG / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={resolvedCanonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={resolvedOg} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOg} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+  <body class="min-h-screen bg-paper text-ink antialiased grain-overlay">
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,19 @@
+---
+interface Props {
+  status: 'live' | 'mvp' | 'wip';
+}
+
+const { status } = Astro.props;
+
+const config = {
+  live: { label: 'live', classes: 'text-tag-live bg-tag-live-bg' },
+  mvp: { label: 'mvp', classes: 'text-tag-mvp bg-tag-mvp-bg' },
+  wip: { label: 'wip', classes: 'text-tag-wip bg-tag-wip-bg' },
+};
+
+const { label, classes } = config[status];
+---
+
+<span class={`font-mono text-xs tracking-widest uppercase px-2 py-0.5 rounded-sm ${classes}`}>
+  {label}
+</span>

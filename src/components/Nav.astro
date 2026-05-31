@@ -1,0 +1,40 @@
+---
+const currentPath = Astro.url.pathname;
+const isHome = currentPath === '/';
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-paper/90 backdrop-blur-sm border-b border-rule">
+  <div class="max-w-wide mx-auto px-6 md:px-10 h-14 flex items-center justify-between">
+    <a href="/" class="font-mono text-sm text-ink hover:text-accent transition-colors font-medium">
+      HY
+    </a>
+    <div class="flex items-center gap-6">
+      <a
+        href="/#work"
+        class="font-mono text-xs uppercase tracking-wide text-muted hover:text-ink transition-colors"
+      >
+        Work
+      </a>
+      <a
+        href="/#specs"
+        class="font-mono text-xs uppercase tracking-wide text-muted hover:text-ink transition-colors"
+      >
+        Specs
+      </a>
+      <a
+        href="/#about"
+        class="font-mono text-xs uppercase tracking-wide text-muted hover:text-ink transition-colors"
+      >
+        About
+      </a>
+      <a
+        href="/cv.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-mono text-xs uppercase tracking-wide text-accent border border-accent/30 px-3 py-1.5 rounded-sm hover:bg-accent hover:text-paper transition-all duration-150"
+      >
+        CV ↓
+      </a>
+    </div>
+  </div>
+</nav>

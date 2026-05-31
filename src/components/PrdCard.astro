@@ -1,0 +1,46 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  tagline: string;
+  insight: string;
+  pdfPath?: string;
+  delay?: number;
+}
+
+const { slug, title, tagline, insight, pdfPath, delay = 0 } = Astro.props;
+---
+
+<div
+  class="border border-rule rounded-sm p-6 md:p-8 animate-in"
+  style={`animation-delay: ${delay}ms`}
+>
+  <div class="mb-4">
+    <span class="font-mono text-xs text-muted uppercase tracking-widest">PRD</span>
+    <h3 class="font-display text-display-md text-ink mt-1">{title}</h3>
+    <p class="text-muted text-sm mt-1">{tagline}</p>
+  </div>
+
+  <div class="border-l-2 border-rule pl-4 py-1 my-4">
+    <p class="text-sm text-ink leading-relaxed italic">"{insight}"</p>
+  </div>
+
+  <div class="flex flex-wrap gap-3 mt-5">
+    <a
+      href={`/prd/${slug}`}
+      class="font-mono text-sm text-ink border border-ink/20 px-4 py-2 rounded-sm hover:border-ink hover:bg-ink hover:text-paper transition-all duration-150"
+    >
+      Read write-up →
+    </a>
+    {pdfPath && (
+      <a
+        href={pdfPath}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-mono text-sm text-muted border border-rule px-4 py-2 rounded-sm hover:text-ink hover:border-ink/30 transition-all duration-150"
+      >
+        Download PDF ↓
+      </a>
+    )}
+  </div>
+</div>

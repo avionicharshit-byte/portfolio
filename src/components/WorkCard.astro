@@ -1,0 +1,63 @@
+---
+import StatusTag from './StatusTag.astro';
+
+interface Props {
+  slug: string;
+  title: string;
+  tagline: string;
+  decision: string;
+  metric: string;
+  status: 'live' | 'mvp' | 'wip';
+  demo?: string;
+  videos?: string;
+  delay?: number;
+}
+
+const { slug, title, tagline, decision, metric, status, demo, videos, delay = 0 } = Astro.props;
+---
+
+<div
+  class="group border border-rule rounded-sm p-6 md:p-8 hover:border-ink/30 transition-colors duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] animate-in flex flex-col"
+  style={`animation-delay: ${delay}ms`}
+>
+  <div class="flex items-start justify-between gap-4 mb-3">
+    <h3 class="font-display text-display-md text-ink">{title}</h3>
+    <StatusTag status={status} />
+  </div>
+
+  <p class="text-muted text-sm leading-relaxed mb-5">{tagline}</p>
+
+  <div class="border-t border-rule pt-4 mb-5">
+    <p class="font-mono text-xs text-muted uppercase tracking-wide mb-1.5">The call</p>
+    <p class="text-sm text-ink leading-snug">{decision}</p>
+  </div>
+
+  <p class="font-mono text-accent text-sm font-medium mb-5">{metric}</p>
+
+  <div class="mt-auto flex flex-wrap gap-2">
+    <a
+      href={`/work/${slug}`}
+      class="font-mono text-xs text-ink border border-rule px-3 py-1.5 rounded-sm hover:border-ink/40 hover:bg-ink/5 transition-all duration-150"
+    >
+      Case study →
+    </a>
+    {demo && (
+      <a
+        href={demo}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-mono text-xs text-accent border border-accent/30 px-3 py-1.5 rounded-sm hover:bg-accent hover:text-paper transition-all duration-150"
+      >
+        Live demo →
+      </a>
+    )}
+    {videos && (
+      <a
+        href={videos}
+        class="font-mono text-xs text-accent border border-accent/30 px-3 py-1.5 rounded-sm hover:bg-accent hover:text-paper transition-all duration-150"
+      >
+        Watch work →
+      </a>
+    )}
+  </div>
+</div>

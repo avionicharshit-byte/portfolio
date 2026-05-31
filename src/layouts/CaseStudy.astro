@@ -1,0 +1,255 @@
+---
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import StatusTag from '../components/StatusTag.astro';
+
+interface Props {
+  title: string;
+  tagline: string;
+  status: 'live' | 'mvp' | 'wip';
+  decision: string;
+  metric: string;
+  stack: string;
+  demo?: string;
+  repo?: string;
+}
+
+const { title, tagline, status, decision, metric, stack, demo, repo } = Astro.props;
+---
+
+<Base title={`${title} — Harshit Dev Yadav`} description={tagline}>
+  <Nav />
+
+  <main class="pt-28 pb-16">
+    <div class="max-w-wide mx-auto px-6 md:px-10">
+
+      <!-- Back -->
+      <a href="/#work" class="font-mono text-xs text-muted hover:text-ink transition-colors uppercase tracking-wide inline-flex items-center gap-1 mb-12">
+        ← All work
+      </a>
+
+      <!-- Header -->
+      <header class="mb-16 animate-in" style="animation-delay: 0ms">
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <StatusTag status={status} />
+          <span class="font-mono text-xs text-muted uppercase tracking-wide">Case study</span>
+        </div>
+
+        <h1 class="font-display text-display-xl text-ink mb-4 max-w-[20ch] text-balance">
+          {title}
+        </h1>
+
+        <p class="text-muted text-lg max-w-measure mb-8">{tagline}</p>
+
+        <!-- Key facts bar -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-px border border-rule rounded-sm overflow-hidden bg-rule">
+          <div class="bg-paper px-5 py-4">
+            <p class="font-mono text-xs text-muted uppercase tracking-wide mb-1.5">The call</p>
+            <p class="text-sm text-ink leading-snug">{decision}</p>
+          </div>
+          <div class="bg-paper px-5 py-4">
+            <p class="font-mono text-xs text-muted uppercase tracking-wide mb-1.5">Outcome</p>
+            <p class="font-mono text-accent text-sm font-semibold">{metric}</p>
+          </div>
+          <div class="bg-paper px-5 py-4">
+            <p class="font-mono text-xs text-muted uppercase tracking-wide mb-1.5">Stack</p>
+            <p class="font-mono text-xs text-ink leading-relaxed">{stack}</p>
+          </div>
+        </div>
+
+        <!-- Links -->
+        {(demo || repo) && (
+          <div class="flex flex-wrap gap-3 mt-6">
+            {demo && (
+              <a
+                href={demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-sm text-accent border border-accent/30 px-4 py-2 rounded-sm hover:bg-accent hover:text-paper transition-all duration-150"
+              >
+                Live demo →
+              </a>
+            )}
+            {repo && (
+              <a
+                href={repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-sm text-muted border border-rule px-4 py-2 rounded-sm hover:text-ink hover:border-ink/30 transition-all duration-150"
+              >
+                GitHub repo →
+              </a>
+            )}
+          </div>
+        )}
+      </header>
+
+      <!-- Body -->
+      <article class="prose-case animate-in" style="animation-delay: 100ms">
+        <slot />
+      </article>
+
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .prose-case :global(h2) {
+    font-family: 'Fraunces Variable', Georgia, serif;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #0D0D0D;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #E2DED8;
+  }
+
+  .prose-case :global(h3) {
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0D0D0D;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .prose-case :global(p) {
+    color: #3A3A3A;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    max-width: 68ch;
+  }
+
+  .prose-case :global(strong) {
+    color: #0D0D0D;
+    font-weight: 600;
+  }
+
+  .prose-case :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.25rem;
+    max-width: 68ch;
+  }
+
+  .prose-case :global(ul li) {
+    color: #3A3A3A;
+    line-height: 1.75;
+    padding-left: 1.25rem;
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-case :global(ul li::before) {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #1B3BFF;
+    font-weight: 500;
+  }
+
+  .prose-case :global(hr) {
+    border: none;
+    border-top: 1px solid #E2DED8;
+    margin: 2.5rem 0;
+  }
+
+  .prose-case :global(code) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.8em;
+    background: #F0EDE8;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    color: #0D0D0D;
+  }
+
+  .prose-case :global(a) {
+    color: #1B3BFF;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose-case :global(a:hover) {
+    text-decoration: none;
+  }
+
+  /* Media — images */
+  .prose-case :global(.media-grid) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .prose-case :global(.media-grid) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .prose-case :global(.media-item) {
+    margin: 0;
+  }
+
+  .prose-case :global(.media-item img),
+  .prose-case :global(.media-grid img) {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 4px;
+    border: 1px solid #E2DED8;
+    display: block;
+  }
+
+  .prose-case :global(figcaption),
+  .prose-case :global(.media-caption) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.72rem;
+    color: #6B6B6B;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+  }
+
+  /* Media — video */
+  .prose-case :global(.media-video) {
+    margin: 1.5rem 0;
+  }
+
+  .prose-case :global(.media-video video) {
+    width: 100%;
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #E2DED8;
+    display: block;
+    background: #0D0D0D;
+  }
+</style>
+
+<script>
+  /* Lazy-load videos: start with preload="none", switch to
+     preload="metadata" when the video enters the viewport.      */
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const video = entry.target as HTMLVideoElement;
+          if (video.preload === 'none') {
+            video.preload = 'metadata';
+          }
+          observer.unobserve(video);
+        }
+      });
+    },
+    { rootMargin: '200px' }
+  );
+
+  document.querySelectorAll('video[data-lazy]').forEach((v) => observer.observe(v));
+</script>
