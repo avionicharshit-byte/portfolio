@@ -1,0 +1,106 @@
+@import '@fontsource-variable/fraunces';
+@import '@fontsource/geist/400.css';
+@import '@fontsource/geist/500.css';
+@import '@fontsource/geist/600.css';
+@import '@fontsource/geist-mono/400.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Geist', system-ui, sans-serif;
+    background-color: #FAF8F4;
+    color: #0D0D0D;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background-color: #1B3BFF;
+    color: #FAF8F4;
+  }
+
+  :focus-visible {
+    outline: 2px solid #1B3BFF;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  .section-rule {
+    @apply border-t border-rule;
+  }
+
+  .mono-tag {
+    @apply font-mono text-xs tracking-wide uppercase;
+  }
+
+  .metric-callout {
+    @apply font-mono text-accent text-sm font-medium;
+  }
+
+  .decision-line {
+    @apply font-display font-semibold text-display-md text-ink;
+  }
+
+  .animate-in {
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .animate-in-slow {
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .grain-overlay {
+    position: relative;
+  }
+
+  .grain-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@keyframes fadeUp {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in,
+  .animate-in-slow {
+    opacity: 1;
+    animation: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

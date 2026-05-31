@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# astro cache
+.astro/
+
+# IDE
+.idea/
+.vscode/
+
+# env
+.env
+.env.local
+.env*.local
+
+# macOS
+.DS_Store
+*.log
+
+# source videos in root (originals — web copies are in public/work/tohands/)
+bill-feature-demo.mp4
+calculator-diagnostic-demo.mp4
+giving-demo-to-varun-dua.mp4
+independence-video.mp4
+onboarding.mp4
+printer-poc-with-bluetooth.mp4
+
+# reference / scratch docs
+PORTFOLIO_BUILD_BRIEF.md
+DuoLingo_Notifications-prd.md
+FIJupiter-prd.md
